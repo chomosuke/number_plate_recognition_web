@@ -25,8 +25,8 @@
    dune
    (ocamlformat (= 0.26.1))
    core
+   bonsai
    ppx_jane
-   js_of_ocaml-ppx
    js_of_ocaml-compiler)
  (tags
   (topics "to describe" your project)))

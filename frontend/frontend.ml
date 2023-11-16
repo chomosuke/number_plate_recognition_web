@@ -1,3 +1,5 @@
-open Core
+open! Core
+open Bonsai_web
 
-let () = print_endline Shared.string
+let component = Bonsai.const (Vdom.Node.text "hello world")
+let () = Bonsai_web.Start.start component
