@@ -1,0 +1,4 @@
+(executable
+ (public_name number_plate_recognition)
+ (name main)
+ (libraries number_plate_recognition))

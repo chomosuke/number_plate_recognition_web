@@ -1,0 +1,2 @@
+(library
+ (name number_plate_recognition))
