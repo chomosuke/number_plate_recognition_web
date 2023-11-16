@@ -1,0 +1,8 @@
+(executable
+ (name frontend)
+ (modes js)
+ (libraries
+   core
+   shared)
+ (preprocess
+  (pps ppx_jane js_of_ocaml-ppx)))

@@ -1,0 +1,2 @@
+- fresh clone: `opam switch create . --deps-only`
+- update dependency: `opam install . --deps-only`

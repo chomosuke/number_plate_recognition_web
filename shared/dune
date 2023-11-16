@@ -1,0 +1,4 @@
+(library
+ (name shared)
+ (preprocess
+  (pps ppx_jane)))

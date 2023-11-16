@@ -17,9 +17,17 @@
 
 (package
  (name number_plate_recognition)
+ (allow_empty)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune)
+ (depends
+   ocaml
+   dune
+   (ocamlformat (= 0.26.1))
+   core
+   ppx_jane
+   js_of_ocaml-ppx
+   js_of_ocaml-compiler)
  (tags
   (topics "to describe" your project)))
 
