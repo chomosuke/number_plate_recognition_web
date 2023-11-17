@@ -3,20 +3,34 @@ open Async
 open Cohttp
 open Cohttp_async
 
-let static docroot req =
-  let path = Path.resolve_local_file ~docroot ~uri:(Request.uri req) in
-  let path =
-    if Char.(path.[String.length path - 1] = '/') then path ^ "index.html" else path
-  in
-  Server.respond_with_file path
-;;
+let api_pre = "/api/"
+let api_pre_len = String.length api_pre
+let error_404 = "<html><body><h1>404 Not Found</h1></body></html>"
 
-let handle_request ~body req =
+let static docroot req =
   match Request.meth req with
   | `GET ->
-    let%bind _body = Body.to_string body in
-    Server.respond_string "Hey there"
+    let path = Path.resolve_local_file ~docroot ~uri:(Request.uri req) in
+    let path =
+      if Char.(path.[String.length path - 1] = '/') then path ^ "index.html" else path
+    in
+    Server.respond_with_file ~error_body:error_404 path
   | _ -> Server.respond `Method_not_allowed
+;;
+
+let match_prefix s p =
+  String.length s >= String.length p && String.(sub s ~pos:0 ~len:(length p) = p)
+;;
+
+let route body req =
+  let path = Request.uri req |> Uri.path in
+  let path = String.(sub ~pos:api_pre_len ~len:(length path - api_pre_len) path) in
+  if match_prefix path "plates"
+  then (
+    match Request.meth req with
+    | `GET -> Plates.get body req
+    | _ -> Server.respond `Method_not_allowed)
+  else Server.respond_string ~status:`Not_found error_404
 ;;
 
 let start_server port static_path () =
@@ -26,9 +40,7 @@ let start_server port static_path () =
     (Tcp.Where_to_listen.of_port port)
     (fun ~body _ req ->
        let path = Request.uri req |> Uri.path in
-       if String.length path >= 5 && String.(sub path ~pos:0 ~len:5 = "/api/")
-       then handle_request ~body req
-       else static static_path req)
+       if match_prefix path api_pre then route body req else static static_path req)
   >>= fun _ -> Deferred.never () (* prevent garbage collection? *)
 ;;
 
