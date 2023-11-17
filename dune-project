@@ -5,11 +5,9 @@
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github chomosuke/number_plate_recognition_web))
 
 (authors "Author Name")
-
-(maintainers "Maintainer Name")
 
 (license LICENSE)
 
@@ -17,7 +15,6 @@
 
 (package
  (name number_plate_recognition)
- (allow_empty)
  (synopsis "A short synopsis")
  (description "A longer description")
  (depends
@@ -26,6 +23,8 @@
    (ocamlformat (= 0.26.1))
    core
    bonsai
+   async
+   cohttp-async
    ppx_jane
    js_of_ocaml-compiler)
  (tags

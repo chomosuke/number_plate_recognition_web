@@ -2,19 +2,21 @@
 opam-version: "2.0"
 synopsis: "A short synopsis"
 description: "A longer description"
-maintainer: ["Maintainer Name"]
 authors: ["Author Name"]
 license: "LICENSE"
 tags: ["topics" "to describe" "your" "project"]
-homepage: "https://github.com/username/reponame"
+homepage: "https://github.com/chomosuke/number_plate_recognition_web"
 doc: "https://url/to/documentation"
-bug-reports: "https://github.com/username/reponame/issues"
+bug-reports:
+  "https://github.com/chomosuke/number_plate_recognition_web/issues"
 depends: [
   "ocaml"
   "dune" {>= "3.11"}
   "ocamlformat" {= "0.26.1"}
   "core"
   "bonsai"
+  "async"
+  "cohttp-async"
   "ppx_jane"
   "js_of_ocaml-compiler"
   "odoc" {with-doc}
@@ -33,4 +35,4 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-dev-repo: "git+https://github.com/username/reponame.git"
+dev-repo: "git+https://github.com/chomosuke/number_plate_recognition_web.git"

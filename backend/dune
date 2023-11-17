@@ -1,7 +1,6 @@
 (executable
+ (public_name backend)
  (name backend)
- (libraries
-   core
-   shared)
+ (libraries core async cohttp cohttp-async core_unix.command_unix shared)
  (preprocess
-  (pps ppx_jane)))
+  (pps ppx_jane ppx_let)))
