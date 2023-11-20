@@ -3,8 +3,8 @@ open! Async
 open! Cohttp
 open! Cohttp_async
 
-let api_pre = "/api/"
-let api_pre_len = String.length api_pre
+let api_root = "/api/"
+let api_root_len = String.length api_root
 
 let static docroot req =
   match Request.meth req with
@@ -23,7 +23,7 @@ let match_prefix s p =
 
 let route body req =
   let path = Request.uri req |> Uri.path in
-  let path = String.(sub ~pos:api_pre_len ~len:(length path - api_pre_len) path) in
+  let path = String.(sub ~pos:api_root_len ~len:(length path - api_root_len) path) in
   if match_prefix path "all"
   then (
     match Request.meth req with
@@ -33,7 +33,7 @@ let route body req =
   then (
     match Request.meth req with
     | `GET -> Image.get path body req
-    | _ ->  Respond_error.respond_405 ())
+    | _ -> Respond_error.respond_405 ())
   else Respond_error.respond_404 ()
 ;;
 
@@ -46,7 +46,7 @@ let start_server port static_path username password uri () =
     (Tcp.Where_to_listen.of_port port)
     (fun ~body _ req ->
        let path = Request.uri req |> Uri.path in
-       if match_prefix path api_pre then route body req else static static_path req)
+       if match_prefix path api_root then route body req else static static_path req)
   >>= fun _ -> Deferred.never () (* prevent garbage collection? *)
 ;;
 
