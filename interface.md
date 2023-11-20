@@ -1,4 +1,4 @@
-- GET `plates`
+- GET `all`
     - req: Cookie
     - rep:
         ```json

@@ -2,7 +2,8 @@
 opam-version: "2.0"
 synopsis: "A short synopsis"
 description: "A longer description"
-authors: ["Author Name"]
+maintainer: ["Richard Li"]
+authors: ["Richard Li"]
 license: "LICENSE"
 tags: ["topics" "to describe" "your" "project"]
 homepage: "https://github.com/chomosuke/number_plate_recognition_web"
@@ -17,6 +18,7 @@ depends: [
   "bonsai"
   "async"
   "cohttp-async"
+  "yojson"
   "ppx_jane"
   "js_of_ocaml-compiler"
   "odoc" {with-doc}

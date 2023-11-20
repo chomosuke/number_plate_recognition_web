@@ -7,7 +7,9 @@
 (source
  (github chomosuke/number_plate_recognition_web))
 
-(authors "Author Name")
+(authors "Richard Li")
+
+(maintainers "Richard Li")
 
 (license LICENSE)
 
@@ -25,6 +27,7 @@
    bonsai
    async
    cohttp-async
+   yojson
    ppx_jane
    js_of_ocaml-compiler)
  (tags
