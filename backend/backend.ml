@@ -38,7 +38,7 @@ let route body req =
 ;;
 
 let start_server port static_path username password uri () =
-  Db.conn := Some { username; password; uri = Uri.of_string uri };
+  Db.set_conn { username; password; uri = Uri.of_string uri };
   let%bind _ = Db.update_auth_token () in
   eprintf "Listening for HTTP on port %d\n" port;
   Server.create

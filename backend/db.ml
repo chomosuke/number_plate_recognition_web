@@ -13,6 +13,7 @@ type conn =
   }
 
 let conn : conn option ref = ref None
+let set_conn value = conn := Some value
 
 exception UnexpectedResponse of Response.t * Body.t [@@deriving sexp]
 exception WrongCredential of Response.t * Body.t [@@deriving sexp]
