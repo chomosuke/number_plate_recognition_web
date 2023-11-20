@@ -49,7 +49,7 @@ let update_auth_token () =
   auth_token := Some c
 ;;
 
-let rec query path =
+let rec query_raw path =
   let conn = Option.value_exn !conn in
   let%bind res, body =
     Client.get
@@ -60,9 +60,12 @@ let rec query path =
   match Response.status res with
   | `Unauthorized ->
     let%bind _ = update_auth_token () in
-    query path
-  | `OK ->
-    let%bind body = Body.to_string body in
-    return @@ Json.from_string body
+    query_raw path
+  | `OK -> return body
   | _ -> raise (UnexpectedResponse (res, body))
+;;
+
+let query path =
+  let%bind body = query_raw path >>| Body.to_string |> Deferred.join in
+  return @@ Json.from_string body
 ;;

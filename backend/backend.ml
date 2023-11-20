@@ -5,10 +5,6 @@ open! Cohttp_async
 
 let api_pre = "/api/"
 let api_pre_len = String.length api_pre
-let error_404 = "<html><body><h1>404 Not Found</h1></body></html>"
-let respond_404 () = Server.respond_string ~status:`Not_found error_404
-let error_405 = "<html><body><h1>405 Method Not Allowed</h1></body></html>"
-let respond_405 () = Server.respond_string ~status:`Method_not_allowed error_405
 
 let static docroot req =
   match Request.meth req with
@@ -17,8 +13,8 @@ let static docroot req =
     let path =
       if Char.(path.[String.length path - 1] = '/') then path ^ "index.html" else path
     in
-    Server.respond_with_file ~error_body:error_404 path
-  | _ -> respond_405 ()
+    Server.respond_with_file ~error_body:Respond_error.error_404 path
+  | _ -> Respond_error.respond_405 ()
 ;;
 
 let match_prefix s p =
@@ -31,9 +27,14 @@ let route body req =
   if match_prefix path "all"
   then (
     match Request.meth req with
-    | `GET -> All.get body req
-    | _ -> respond_405 ())
-  else respond_404 ()
+    | `GET -> All.get path body req
+    | _ -> Respond_error.respond_405 ())
+  else if match_prefix path "image"
+  then (
+    match Request.meth req with
+    | `GET -> Image.get path body req
+    | _ ->  Respond_error.respond_405 ())
+  else Respond_error.respond_404 ()
 ;;
 
 let start_server port static_path username password uri () =

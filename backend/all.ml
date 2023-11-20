@@ -14,13 +14,14 @@ let transform_doc doc =
       )
     ; ( "image"
       , `String
-          ((doc |> member "_id" |> to_string)
+          ("image/"
+           ^ (doc |> member "_id" |> to_string)
            ^ "/"
            ^ (doc |> member "_attachments" |> to_assoc |> List.hd_exn |> fst)) )
     ]
 ;;
 
-let get _body _req =
+let get _path _body _req =
   let%bind all_docs = Db.query "/number_plates/_all_docs" in
   let doc_ids =
     member "rows" all_docs

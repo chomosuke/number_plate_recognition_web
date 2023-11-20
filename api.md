@@ -6,7 +6,7 @@
             {
                 "number": "plate number",
                 "dateTime": "ISO 8601 date time",
-                "image": "Url to the image"
+                "image": "path to the image"
             }
         ]
         ```
