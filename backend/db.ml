@@ -69,3 +69,5 @@ let query path =
   let%bind body = query_raw path >>| Body.to_string |> Deferred.join in
   return @@ Json.from_string body
 ;;
+
+let plates_root = "/number_plates/"
