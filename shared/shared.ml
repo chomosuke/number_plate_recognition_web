@@ -1,3 +1,0 @@
-
-
-let string = "Hello World!"
