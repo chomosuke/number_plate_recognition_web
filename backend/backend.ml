@@ -24,10 +24,10 @@ let match_prefix s p =
 let route body req =
   let path = Request.uri req |> Uri.path in
   let path = String.(sub ~pos:api_root_len ~len:(length path - api_root_len) path) in
-  if match_prefix path "all"
+  if match_prefix path "plates"
   then (
     match Request.meth req with
-    | `GET -> All.get path body req
+    | `GET -> Plates.get path body req
     | _ -> Respond_error.respond_405 ())
   else if match_prefix path "image"
   then (

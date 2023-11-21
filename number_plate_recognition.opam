@@ -18,6 +18,7 @@ depends: [
   "bonsai"
   "async"
   "cohttp-async"
+  "cohttp-lwt-jsoo" {= "5.3.0"}
   "yojson"
   "ppx_jane"
   "js_of_ocaml-compiler"

@@ -1,9 +1,14 @@
 (executable
  (name frontend)
  (modes js)
- (libraries core bonsai bonsai.web shared)
+ (libraries core
+            bonsai
+            bonsai.web
+            cohttp-lwt-jsoo
+            yojson
+            shared)
  (preprocess
-  (pps js_of_ocaml-ppx ppx_jane)))
+  (pps js_of_ocaml-ppx ppx_jane bonsai.ppx_bonsai)))
 
 (rule
  (copy index.html _index.html))

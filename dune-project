@@ -27,8 +27,10 @@
    bonsai
    async
    cohttp-async
+   (cohttp-lwt-jsoo (= 5.3.0))
    yojson
    ppx_jane
+   ; ppx_css
    js_of_ocaml-compiler)
  (tags
   (topics "to describe" your project)))
