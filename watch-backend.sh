@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-dune exec backend -w -- -s _build/default/frontend/
+dune exec backend -- -s _build/default/frontend/ -dbu admin -dbp password -dburi http://localhost:5984/
