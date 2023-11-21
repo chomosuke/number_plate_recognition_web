@@ -31,9 +31,6 @@ let get_auth_token () =
   match Response.status res with
   | `OK ->
     let header = Response.headers res in
-    let header =
-      Header.add_multi header "set-cookie" @@ Header.get_multi header "Set-Cookie"
-    in
     let token =
       Cookie.Set_cookie_hdr.extract header
       |> List.hd_exn
