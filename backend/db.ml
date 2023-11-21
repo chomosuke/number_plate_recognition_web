@@ -62,13 +62,16 @@ let rec query_raw path =
   | `Unauthorized ->
     let%bind _ = update_auth_token () in
     query_raw path
-  | `OK -> return body
-  | _ -> raise (UnexpectedResponse (res, body))
+  | _ -> return (res, body)
 ;;
 
 let query path =
-  let%bind body = query_raw path >>| Body.to_string |> Deferred.join in
-  return @@ Json.from_string body
+  let%bind res, body = query_raw path in
+  match Response.status res with
+  | `OK ->
+    let%bind body = body |> Body.to_string in
+    return @@ Json.from_string body
+  | _ -> raise (UnexpectedResponse (res, body))
 ;;
 
 let plates_root = "/number_plates/"
