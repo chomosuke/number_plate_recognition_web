@@ -1,3 +1,7 @@
+(* stolen from:
+ * https://github.com/askvortsov1/nittany_market/blob/main/frontend/effect_lwt.ml
+ *)
+
 open! Core
 open! Lwt
 include Virtual_dom.Vdom.Effect

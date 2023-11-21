@@ -63,7 +63,7 @@ let table =
            ; Node.text date_time
            ; Node.img ~attrs:[ Attr.src @@ "/api/" ^ image ] ()
            ])
-  | None -> Node.text "Loading"
+  | None -> Node.text "Loading..."
 ;;
 
 let () = Bonsai_web.Start.start table

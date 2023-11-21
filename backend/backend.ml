@@ -22,6 +22,7 @@ let match_prefix s p =
 ;;
 
 let route body req =
+  (* let%bind () = Async_kernel.after (Time_ns.Span.of_sec 1.) in *)
   let path = Request.uri req |> Uri.path in
   let path = String.(sub ~pos:api_root_len ~len:(length path - api_root_len) path) in
   if match_prefix path "plates"
