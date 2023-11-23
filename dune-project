@@ -29,6 +29,8 @@
    cohttp-async
    (cohttp-lwt-jsoo (= 5.3.0))
    yojson
+   safepass
+   nocrypto
    ppx_jane
    ; ppx_css
    js_of_ocaml-compiler)

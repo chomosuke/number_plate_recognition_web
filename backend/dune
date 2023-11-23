@@ -3,6 +3,16 @@
 (executable
  (public_name backend)
  (name backend)
- (libraries core async cohttp cohttp-async core_unix.command_unix yojson shared)
+ (libraries
+  core
+  async
+  cohttp
+  cohttp-async
+  core_unix.command_unix
+  yojson
+  safepass
+  nocrypto
+  nocrypto.unix
+  shared)
  (preprocess
   (pps ppx_jane ppx_let)))

@@ -28,18 +28,24 @@ let route body req =
   if match_prefix path "plates"
   then (
     match Request.meth req with
-    | `GET -> Plates.get path body req
+    | `GET -> Plates.get body req
     | _ -> Respond_error.respond_405 ())
   else if match_prefix path "image"
   then (
     match Request.meth req with
-    | `GET -> Image.get path body req
+    | `GET -> Image.get body req
+    | _ -> Respond_error.respond_405 ())
+  else if match_prefix path "login"
+  then (
+    match Request.meth req with
+    | `POST -> Login.post body req
     | _ -> Respond_error.respond_405 ())
   else Respond_error.respond_404 ()
 ;;
 
-let start_server port static_path username password uri () =
+let start_server port static_path secret username password uri () =
   Db.set_conn { username; password; uri = Uri.of_string uri };
+  Aes.set_secret secret;
   let%bind _ = Db.update_auth_token () in
   eprintf "Listening for HTTP on port %d\n" port;
   Server.create
@@ -56,11 +62,15 @@ let () =
     ~summary:"Simple http server that outputs body of POST's"
     Command.Spec.(
       empty
-      +> flag "-p" (optional_with_default 8000 int) ~doc:"Source port to listen on"
+      +> flag "-port" (optional_with_default 8000 int) ~doc:"Source port to listen on"
       +> flag
-           "-s"
+           "-path"
            (required string)
            ~doc:"Static file location that the server will serve"
+      +> flag
+           "-secret"
+           (required string)
+           ~doc:"Secret that the server use to handout cookies"
       +> flag "-dbu" (required string) ~doc:"Username for the database"
       +> flag "-dbp" (required string) ~doc:"Password for the database"
       +> flag "-dburi" (required string) ~doc:"Uri for the database")
