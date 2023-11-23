@@ -25,20 +25,22 @@ let route body req =
   (* let%bind () = Async_kernel.after (Time_ns.Span.of_sec 1.) in *)
   let path = Request.uri req |> Uri.path in
   let path = String.(sub ~pos:api_root_len ~len:(length path - api_root_len) path) in
-  if match_prefix path "plates"
+  if match_prefix path "login"
   then (
     match Request.meth req with
-    | `GET -> Plates.get body req
+    | `POST -> Login.post body req
     | _ -> Respond_error.respond_405 ())
+  else if not @@ Option.is_some @@ Login.verify req
+  then Respond_error.respond_405 ()
   else if match_prefix path "image"
   then (
     match Request.meth req with
     | `GET -> Image.get body req
     | _ -> Respond_error.respond_405 ())
-  else if match_prefix path "login"
+  else if match_prefix path "plates"
   then (
     match Request.meth req with
-    | `POST -> Login.post body req
+    | `GET -> Plates.get body req
     | _ -> Respond_error.respond_405 ())
   else Respond_error.respond_404 ()
 ;;

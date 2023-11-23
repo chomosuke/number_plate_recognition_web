@@ -50,3 +50,16 @@ let post body _req =
      | None -> Respond_error.respond_401 ())
   | None -> Respond_error.respond_400 ()
 ;;
+
+let verify req =
+  let headers = Request.headers req in
+  let open Option in
+  Let_syntax.(
+    let%bind token =
+      Cookie.Cookie_hdr.extract headers
+      |> List.find_map ~f:(fun (n, t) -> Option.some_if String.(n = "Auth") t)
+    in
+    let%bind token = Aes.decrypt token in
+    try_with (fun () ->
+      Json.Util.(token |> Json.from_string |> member "username" |> to_string)))
+;;
