@@ -26,8 +26,11 @@ let encrypt ?(padding = ' ') str =
 let decrypt str =
   let key = Option.value_exn !secret in
   let open Option.Let_syntax in
-  let%map c = str |> of_string |> Base64.decode in
-  let iv, c = split c iv_size in
-  try c |> AES.decrypt ~key ~iv |> to_string with
-  | exn -> raise exn
+  let%bind c = str |> of_string |> Base64.decode in
+  try
+    Some
+      (let iv, c = split c iv_size in
+       c |> AES.decrypt ~key ~iv |> to_string)
+  with
+  | Invalid_argument _ -> None
 ;;

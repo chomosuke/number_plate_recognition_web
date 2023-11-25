@@ -31,7 +31,7 @@ let route body req =
     | `POST -> Login.post body req
     | _ -> Respond_error.respond_405 ())
   else if not @@ Option.is_some @@ Login.verify req
-  then Respond_error.respond_405 ()
+  then Respond_error.respond_401 ()
   else if match_prefix path "image"
   then (
     match Request.meth req with
