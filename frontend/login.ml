@@ -47,6 +47,7 @@ let component =
           ; Node.input
               ~attrs:
                 [ Attr.on_change (fun _ str -> set_password str)
+                ; Attr.type_ "password"
                 ; Attr.style Css_gen.(margin ~bottom:(`Px 20) ())
                 ]
               ()
