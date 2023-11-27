@@ -9,24 +9,18 @@ let component =
         type t = Http.plates [@@deriving sexp, equal]
       end)
   in
-  let fetch_plates () =
+  let fetch_plates =
     let%map set_plates = set_plates in
     let%bind.Effect plates = Http.get_plates () in
     set_plates (Some plates)
   in
-  let%sub () = Bonsai.Edge.lifecycle ~on_activate:(fetch_plates ()) () in
-  let on_login =
-    let%map fetch_plates = fetch_plates () in
-    fun login ->
-      let%bind.Effect _ = Http.login login in
-      fetch_plates
-  in
+  let%sub () = Bonsai.Edge.lifecycle ~on_activate:(fetch_plates) () in
   let%sub table = Table.component in
   let%sub login = Login.component in
   let%arr table = table
   and plates = plates
   and login = login
-  and on_login = on_login in
+  and fetch_plates = fetch_plates in
   let open Vdom in
   match plates with
   | None | Some (Plates _) ->
@@ -47,6 +41,6 @@ let component =
         ]
       [ Node.div
           ~attrs:[ Attr.style Css_gen.(margin ~top:`Auto ~bottom:`Auto ()) ]
-          [ login on_login ]
+          [ login fetch_plates ]
       ]
 ;;
