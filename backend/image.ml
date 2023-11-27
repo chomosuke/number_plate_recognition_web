@@ -6,7 +6,7 @@ open! Cohttp_async
 let get _body req =
   let path = Request.uri req |> Uri.path in
   match String.split_on_chars ~on:[ '/' ] path with
-  | [ _; _; id; filename ] ->
+  | [ _; _; _; id; filename ] ->
     if String.length filename = 0
     then Respond_error.respond_404 ()
     else (
