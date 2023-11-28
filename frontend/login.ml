@@ -56,8 +56,18 @@ let component =
           ~attrs:
             [ Attr.on_click (fun _ ->
                 let open Effect.Let_syntax in
-                let%bind _ = if failed then set_failed false else return () in
-                let%bind success = Http.login { username; password } in
+                let d =
+                  if failed
+                  then (
+                    let%bind _ = set_failed false in
+                    Bonsai_web.Effect.of_deferred_fun
+                      (fun () -> Async_kernel.after (Time_ns.Span.of_sec 0.2))
+                      ())
+                  else return ()
+                in
+                let%bind success, _ =
+                  Let_syntax.both (Http.login { username; password }) d
+                in
                 if success then on_login else set_failed true)
             ]
           [ Node.text "login" ]
