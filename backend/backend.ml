@@ -28,19 +28,19 @@ let route body req =
   if match_prefix path "login"
   then (
     match Request.meth req with
-    | `POST -> Login.post body req
+    | `POST -> Handlers.Login.post body req
     | _ -> Respond_error.respond_405 ())
-  else if not @@ Option.is_some @@ Login.verify req
+  else if not @@ Option.is_some @@ Handlers.Login.verify req
   then Respond_error.respond_401 ()
   else if match_prefix path "image"
   then (
     match Request.meth req with
-    | `GET -> Image.get body req
+    | `GET -> Handlers.Image.get body req
     | _ -> Respond_error.respond_405 ())
   else if match_prefix path "plates"
   then (
     match Request.meth req with
-    | `GET -> Plates.get body req
+    | `GET -> Handlers.Plates.get body req
     | _ -> Respond_error.respond_405 ())
   else Respond_error.respond_404 ()
 ;;
